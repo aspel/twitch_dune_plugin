@@ -13,10 +13,6 @@
             {
                 $menu = new GameSearchMenu(substr($media_url, 13));
             }
-            if (strpos($media_url, "games_play:") === 0)
-            {
-                $menu = new GamePlay(substr($media_url, 11));
-            }
 			else if ($media_url == "games")
 			{
 				$menu = new GamesMenu();
@@ -47,6 +43,12 @@
 
 		public function get_vod_info($media_url, &$plugin_cookies)
 		{
+
+            if (strpos($media_url, "stream_name:") === 0)
+            {
+                $stream = new GamePlay(substr($media_url, 12));
+                return $stream->generatePlayInfo();
+            }
 		}
 
 		public function get_vod_stream_url($media_url, &$plugin_cookies)
