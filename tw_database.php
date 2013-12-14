@@ -3,6 +3,7 @@
 require_once "lib/utils.php";
 	
 class TwDatabase {
+
     public $database;
 	function __construct() {
 	    $this->loadGames();
@@ -23,6 +24,7 @@ class TwDatabase {
 }
 
 class Tw_Search_stream {
+
     public $database;
 
 	function __construct($name) {
