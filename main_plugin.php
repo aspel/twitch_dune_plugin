@@ -11,8 +11,8 @@
 		
         public function get_folder_view($media_url, &$plugin_cookies) {
 
-           	if (strpos($media_url, "games:") === 0) {
-                $menu = new GameSearchMenu(substr($media_url, 6));
+           	if (strpos($media_url, "search_games:") === 0) {
+                $menu = new GameSearchMenu(substr($media_url, 13));
             }
            	if (strpos($media_url, "streams:") === 0) {
                 $menu = new GameQuality(substr($media_url, 8));

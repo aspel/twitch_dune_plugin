@@ -9,7 +9,7 @@
 			
 			$items = array();
 			foreach ($database->database as $game) {
-				$items[] = array("caption" => $game->name, "url" => "games:".$game->name);
+				$items[] = array("caption" => $game->name, "url" => "search_games:".$game->name);
 			}
 			usort($items, array("BaseMenu", "CompareCaption"));
 			
