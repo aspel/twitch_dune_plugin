@@ -4,7 +4,7 @@
     require "games_menu.php";
     require "games_search_menu.php";
     require "channels_menu.php";
-    require "game_play.php"
+    require "game_play.php";
 	
 	class TwitchPlugin implements DunePlugin {
 		
