@@ -67,8 +67,8 @@ class Tw_Search_quality {
         $ts = "token=".urlencode($tokens->token)."&sig=".urlencode($tokens->sig);
         $m3u8_url = "http://usher.twitch.tv/api/channel/hls/".$this->name.".m3u8?".$ts;
         $hls_data = HD::http_get_document($m3u8_url);
-        preg_match_all('|BANDWIDTH=(\d+).*VIDEO=\"(\w+)\"|', $contents, $match_video);
-        preg_match_all('|http:(.*)|', $contents, $match_url);
+        preg_match_all('|BANDWIDTH=(\d+).*VIDEO=\"(\w+)\"|', $hls_data, $match_video);
+        preg_match_all('|http:(.*)|', $hls_data, $match_url);
         array_push($match_video,$match_url);
         $this->database = $match_video[0];
     }
