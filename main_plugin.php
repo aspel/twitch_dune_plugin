@@ -3,6 +3,7 @@
     require "main_menu.php";
     require "games_menu.php";
     require "games_search_menu.php";
+    require "games_quality_menu.php";
     require "channels_menu.php";
     require "game_play.php";
 	
@@ -10,8 +11,11 @@
 		
         public function get_folder_view($media_url, &$plugin_cookies) {
 
-           	if (strpos($media_url, "games_search:") === 0) {
-                $menu = new GameSearchMenu(substr($media_url, 13));
+           	if (strpos($media_url, "games:") === 0) {
+                $menu = new GameSearchMenu(substr($media_url, 6));
+            }
+           	if (strpos($media_url, "streams:") === 0) {
+                $menu = new GameQuality(substr($media_url, 8));
             }
 			else if ($media_url == "games") {
 				$menu = new GamesMenu();

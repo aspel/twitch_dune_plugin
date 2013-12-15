@@ -15,13 +15,8 @@
 			$items = array();
 
 			foreach ($database->database as $game) {
-				$items[] = array("caption" => $game->display_name, "url" => "stream_name:".$game->name);
+				$items[] = array("caption" => $game->display_name, "url" => "streams:".$game->name);
 			}
-			usort($items, array("BaseMenu", "CompareCaption"));
-            
-            $this->iconFile = "gui_skin://small_icons/video_file.aai";
-            $this->action = PLUGIN_VOD_PLAY_ACTION_ID;
-			
 			return $this->create_folder_view($items);
 		}
 	}

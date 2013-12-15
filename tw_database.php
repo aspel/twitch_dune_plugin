@@ -29,6 +29,7 @@ class Tw_Search_stream {
 
 	function __construct($name) {
 		$this->name = $name;
+        $this->streamName = $stream_name;
         $this->loadGames();
 	}
 
@@ -45,6 +46,32 @@ class Tw_Search_stream {
             $this->database[] = $game->channel;
         }
     }
-
+    
+   
 }
+class Tw_Search_quality {
+
+    public $database;
+
+	function __construct($name) {
+		$this->name = $name;
+        $this->loadQuality();
+	}
+
+	private function loadQuality() {
+		$this->database = array();
+        $top_url = "http://api.twitch.tv/api/channels/".$this->streamName."/access_token";
+        $auth_data = HD::http_get_document($top_url);
+        $tokens = json_decode($auth_data);
+
+        $ts = "token=".urlencode($tokens->token)."&sig=".urlencode($tokens->sig);
+        $m3u8_url = "http://usher.twitch.tv/api/channel/hls/".$this->streamName.".m3u8?".$ts;
+        $hls_data = HD::http_get_document($m3u8_url);
+        preg_match_all('|BANDWIDTH=(\d+).*VIDEO=\"(\w+)\"|', $contents, $match_video);
+        preg_match_all('|http:(.*)|', $contents, $match_url);
+        array_push($match_video,$match_url);
+        $this->database = $match_video[0];
+    }
+}
+    
 ?>
