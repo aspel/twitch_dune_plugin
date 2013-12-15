@@ -14,14 +14,12 @@
 			
 			$items = array();
 
-            $i=0;
             $matches = $database->database;
+            $i = 0;
 			foreach ($matches as $game) {
-                foreach ($game as $quality) {
-                    hd_print("-->>".$quality);
+                    hd_print("-->>".$matches[0][$i]);
                     $items[] = array("caption" => $game[2], "url" => "stream_name:".$game[3][0]);
                     $i++;
-                }
             }   
             
             $this->iconFile = "gui_skin://small_icons/video_file.aai";
