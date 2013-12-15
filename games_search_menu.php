@@ -17,8 +17,6 @@
 				$items[] = array("caption" => $game->channel->display_name."  -  ".$game->viewers, "url" => "streams:".$game->channel->name);
 			}
 
-            usort($items, array("BaseMenu", "CompareCaption"));
-
 			return $this->create_folder_view($items);
 		}
 	}
