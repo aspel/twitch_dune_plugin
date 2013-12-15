@@ -10,7 +10,7 @@ class GamePlay {
         $this->database = array();
         $top_url = "http://api.twitch.tv/api/channels/".$this->streamName."/access_token";
         $auth_data = HD::http_get_document($top_url);
-        $tokens = json_decode($data);
+        $tokens = json_decode($auth_data);
         
         $ts = "token=".urlencode($tokens->token)."&sig=".urlencode($tokens->sig);
         $m3u8_url = "http://usher.twitch.tv/api/channel/hls/".$this->streamName.".m3u8?".$ts;
