@@ -17,9 +17,11 @@
             $i=0;
             $matches = $database->database;
 			foreach ($matches as $game) {
-                hd_print("-->>".$game[2]);
-                $items[] = array("caption" => $game[2], "url" => "stream_name:".$game[3][0]);
-                $i++;
+                foreach ($game as $quality) {
+                    hd_print("-->>".$quality);
+                    $items[] = array("caption" => $game[2], "url" => "stream_name:".$game[3][0]);
+                    $i++;
+                }
             }   
             
             $this->iconFile = "gui_skin://small_icons/video_file.aai";
