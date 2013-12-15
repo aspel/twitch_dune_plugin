@@ -42,9 +42,8 @@
 		}
 
 		public function get_vod_info($media_url, &$plugin_cookies) {
-            hd_print("-->>".$this->stream_name);
             if (strpos($media_url, "stream_name:") === 0) {
-                $stream = new GamePlay(substr($media_url, 12));
+                $stream = new GamePlay(substr($media_url, 12),$this->stream_name);
                 return $stream->generatePlayInfo();
             }
 		}

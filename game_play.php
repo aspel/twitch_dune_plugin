@@ -4,10 +4,10 @@ class GamePlay {
         
     private $fileIndex;
                 
-    function __construct($stream_url) {
+    function __construct($stream_url,$stream_name) {
 
         $this->streamURL = $stream_url;
-        $this->streamName = "test"; 
+        $this->streamName = $stream_name; 
 
     }
                 
