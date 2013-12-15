@@ -70,7 +70,7 @@ class Tw_Search_quality {
         preg_match_all('|BANDWIDTH=(\d+).*VIDEO=\"(\w+)\"|', $hls_data, $match_video);
         preg_match_all('|http:(.*)|', $hls_data, $match_url);
         array_push($match_video,$match_url);
-        $this->database = $match_video[0];
+        $this->database = $match_video;
     }
 }
     
