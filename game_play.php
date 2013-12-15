@@ -6,18 +6,7 @@ class GamePlay {
                 
     function __construct($stream_name) {
 
-        $this->streamName = $stream_name;
-        $this->database = array();
-        $top_url = "http://api.twitch.tv/api/channels/".$this->streamName."/access_token";
-        $auth_data = HD::http_get_document($top_url);
-        $tokens = json_decode($auth_data);
-        
-        $ts = "token=".urlencode($tokens->token)."&sig=".urlencode($tokens->sig);
-        $m3u8_url = "http://usher.twitch.tv/api/channel/hls/".$this->streamName.".m3u8?".$ts;
-        $hls_data = HD::http_get_document($m3u8_url);
-        preg_match('/http:.*/', $hls_data, $matches);
-        hd_print ($matches);
-        $this->streamURL = $matches[0];
+        $this->streamURL = $stream_name;
 
     }
                 
