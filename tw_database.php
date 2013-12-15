@@ -59,7 +59,6 @@ class Tw_Search_quality {
 	}
 
 	private function loadQuality() {
-		$this->database = array();
         $top_url = "http://api.twitch.tv/api/channels/".$this->name."/access_token";
         $auth_data = HD::http_get_document($top_url);
         $tokens = json_decode($auth_data);
