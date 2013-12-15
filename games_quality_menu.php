@@ -17,8 +17,7 @@
             $i=0;
             $matches = $database->database;
 			foreach ($matches as $game) {
-                hd_print("-->>".$game[$i]);
-                $items[] = array("caption" => $game, "url" => "stream_name:".$game);
+                $items[] = array("caption" => $game[2], "url" => "stream_name:".$game[3][0]);
                 $i++;
             }   
             
