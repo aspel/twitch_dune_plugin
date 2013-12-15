@@ -8,13 +8,14 @@
     require "game_play.php";
 	
 	class TwitchPlugin implements DunePlugin {
-		
+		global $stream_name;
         public function get_folder_view($media_url, &$plugin_cookies) {
 
            	if (strpos($media_url, "search_games:") === 0) {
                 $menu = new GameSearchMenu(substr($media_url, 13));
             }
            	else if (strpos($media_url, "streams:") === 0) {
+                $stream_name = substr($media_url, 8);
                 $menu = new GameQuality(substr($media_url, 8));
             }
 			else if ($media_url == "games") {
@@ -39,7 +40,7 @@
 		}
 
 		public function get_vod_info($media_url, &$plugin_cookies) {
-
+            hd_print("-->>".$stream_name);
             if (strpos($media_url, "stream_name:") === 0) {
                 $stream = new GamePlay(substr($media_url, 12));
                 return $stream->generatePlayInfo();
