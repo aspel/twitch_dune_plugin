@@ -17,6 +17,8 @@
 			foreach ($database->database as $game) {
 				$items[] = array("caption" => $game->display_name, "url" => "streams:".$game->name);
 			}
+            usort($items, array("BaseMenu", "CompareCaption"));
+
 			return $this->create_folder_view($items);
 		}
 	}
