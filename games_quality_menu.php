@@ -18,10 +18,11 @@
             $i = 0;
 
 			foreach ($matches as $game) {
-                    hd_print("-->>".$matches[2][$i]."-->>".$matches[3][$i]);
-                    $items[] = array("caption" => $matches[2][$i], "url" => "stream_name:".$matches[3][$i]);
-                    $i++;
-            }   
+                    if ($matches[2][$i]) {
+                        hd_print("-->>".$matches[2][$i]."-->>".$matches[3][$i]);
+                        $items[] = array("caption" => $matches[2][$i], "url" => "stream_name:".$matches[3][$i]);
+                        $i++;
+            }       }
             
             $this->iconFile = "gui_skin://small_icons/video_file.aai";
             $this->action = PLUGIN_VOD_PLAY_ACTION_ID;
