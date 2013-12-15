@@ -14,7 +14,7 @@
 			$items = array();
 
 			foreach ($database->database as $game) {
-				$items[] = array("caption" => $game->channel->display_name."  -  ".$game->viewers, "url" => "streams:".$game->channel->name);
+				$items[] = array("caption" => $game->channel->display_name."  -  ".$game->viewers." - ".$game->channel->status, "url" => "streams:".$game->channel->name);
 			}
 
 			return $this->create_folder_view($items);
