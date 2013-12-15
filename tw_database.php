@@ -43,7 +43,7 @@ class Tw_Search_stream {
 		$data = HD::http_get_document($url);
 		$games = json_decode($data);
         foreach($games->streams as $game) {
-            $this->database[] = $game->channel;
+            $this->database[] = $game;
         }
     }
     
