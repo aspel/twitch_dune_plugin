@@ -15,9 +15,9 @@ class GamePlay {
         $ts = "token=".urlencode($tokens->token)."&sig=".urlencode($tokens->sig);
         $m3u8_url = "http://usher.twitch.tv/api/channel/hls/".$this->streamName.".m3u8?".$ts;
         $hls_data = HD::http_get_document($m3u8_url);
-        preg_match('/^http:.*/', $hls_data, $matches);
+        preg_match('/http:.*/', $hls_data, $matches);
+        hd_print ($matches);
         $this->streamURL = $matches[0];
-        hd_print ($this->streamURL);
 
     }
                 
