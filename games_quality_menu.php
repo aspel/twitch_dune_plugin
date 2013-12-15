@@ -18,8 +18,8 @@
             $i = 0;
 
 			foreach ($matches as $game) {
-            hd_print ($matches[3][$i][0][$i]);
-                    $items[] = array("caption" => $matches[2][$i], "url" => "stream_name:".$matches[3][$i][0][$i]);
+            hd_print ($matches[3][$i][$i]);
+                    $items[] = array("caption" => $matches[2][$i], "url" => "stream_name:".$matches[3][$i][$i]);
                     $i++;
             }   
             
