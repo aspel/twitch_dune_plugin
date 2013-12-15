@@ -26,7 +26,7 @@
 			else {
 				$menu = new MainMenu();
 			}
-			
+			hd_print("-->> $media_url");
 			return $menu->generate_menu();
 		}
 
