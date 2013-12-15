@@ -14,7 +14,7 @@
            	if (strpos($media_url, "search_games:") === 0) {
                 $menu = new GameSearchMenu(substr($media_url, 13));
             }
-           	if (strpos($media_url, "streams:") === 0) {
+           	else if (strpos($media_url, "streams:") === 0) {
                 $menu = new GameQuality(substr($media_url, 8));
             }
 			else if ($media_url == "games") {
@@ -26,7 +26,7 @@
 			else {
 				$menu = new MainMenu();
 			}
-			hd_print("-->> $media_url");
+			hd_print("-->>$media_url");
 			return $menu->generate_menu();
 		}
 
