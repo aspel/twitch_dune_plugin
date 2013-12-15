@@ -18,7 +18,9 @@
             $i = 0;
 
 			foreach ($matches as $game) {
-                    $items[] = array("caption" => $matches[2][$i], "url" => "stream_name:".$matches[3][$i][0]);
+                    if (! $matches[3][$i][0]) {
+                        $items[] = array("caption" => $matches[2][$i], "url" => "stream_name:".$matches[3][$i][0]);
+                    }
                     $i++;
             }   
             
