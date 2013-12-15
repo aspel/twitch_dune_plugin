@@ -36,7 +36,7 @@ class Tw_Search_stream {
 	private function loadGames() {
 		$this->database = array();
         $game_name = urlencode($this->name);
-    	$this->addGames("https://api.twitch.tv/kraken/search/streams?q=$game_name&top");
+    	$this->addGames("https://api.twitch.tv/kraken/search/streams?q=$game_name&limit=25");
     }
 
 	private function addGames($url) {
