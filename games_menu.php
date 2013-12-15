@@ -15,6 +15,8 @@
 				$items[] = array("caption" => $game->name, "url" => "search_games:".$game->name);
 			}
 			
+            usort($items, array("BaseMenu", "CompareCaption"));
+			
 			return $this->create_folder_view($items);
         }
     }
