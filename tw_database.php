@@ -69,7 +69,7 @@ class Tw_Search_quality {
         $hls_data = HD::http_get_document($m3u8_url);
         preg_match_all('|BANDWIDTH=(\d+).*VIDEO=\"(\w+)\"|', $hls_data, $match_video);
         preg_match_all('|http:(.*)|', $hls_data, $match_url);
-        array_push($match_video,$match_url);
+        array_push($match_video,$match_url[0]);
         $this->database = $match_video;
     }
 }
