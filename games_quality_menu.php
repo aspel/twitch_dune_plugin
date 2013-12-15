@@ -19,7 +19,7 @@
 
 			foreach ($matches as $game) {
                     hd_print($game);
-                    $items[] = array("caption" => $game[2], "url" => "stream_name:".$game[3]);
+                    $items[] = array("caption" => $matches[2][$i], "url" => "stream_name:".$matches[3][$i]);
                     $i++;
             }   
             
