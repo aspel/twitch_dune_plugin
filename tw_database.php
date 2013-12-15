@@ -70,9 +70,8 @@ class Tw_Search_quality {
         preg_match_all('|http:(.*)|', $hls_data, $match_url);
         array_push($match_video,$match_url[0]);
         $this->database = $match_video;
-        }
-        
     }
+        
 }
     
 ?>
