@@ -18,7 +18,6 @@
             $i = 0;
 
 			foreach ($matches as $game) {
-                    hd_print("-->>".$game);
                     $items[] = array("caption" => $matches[2][$i], "url" => "stream_name:".$matches[3][$i]);
                     $i++;
             }   
