@@ -6,7 +6,7 @@
         <parent_media_url>root://applications</parent_media_url>
         <media_url>main_menu</media_url>
         <caption>Twitch TV</caption>
-		<icon_url>gui_skin://large_icons/tv.aai</icon_url>
+        <icon_url>plugin_file://logo/twitch_logo.png</icon_url>
         <actions>
           <key_enter>
             <type>plugin_open_folder</type>
@@ -20,4 +20,11 @@
   <params>
      <program>main.php</program>
   </params>
+  <version_index>1</version_index>
+  <version>0.3</version>
+  <check_update>
+    <schema>1</schema>
+    <url>https://raw.github.com/aspel/twitch_dune_plugin/master/update.txt</url>
+    <timeout>0</timeout>
+  </check_update>
 </dune_plugin>

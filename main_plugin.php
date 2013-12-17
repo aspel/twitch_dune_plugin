@@ -6,64 +6,69 @@
     require "games_quality_menu.php";
     require "channels_menu.php";
     require "game_play.php";
-	
-	class TwitchPlugin implements DunePlugin {
-		
+
+    class TwitchPlugin implements DunePlugin {
+
         public $stream_name;
         
         public function get_folder_view($media_url, &$plugin_cookies) {
 
-           	if (strpos($media_url, "search_games:") === 0) {
+            //Draw menu with all streams in selected game
+            if (strpos($media_url, "search_games:") === 0) {
                 $menu = new GameSearchMenu(substr($media_url, 13));
             }
-           	else if (strpos($media_url, "streams:") === 0) {
+            //Draw menu with all qualities (high,medium,low)
+            else if (strpos($media_url, "streams:") === 0) {
                 $this->stream_name = substr($media_url, 8);
                 $menu = new GameQuality(substr($media_url, 8));
             }
-			else if ($media_url == "games") {
-				$menu = new GamesMenu();
-			}
-			else if ($media_url == "channels") {
-				$menu = new ChannelsMenu();
-			}
-			else {
-				$menu = new MainMenu();
-			}
-			return $menu->generate_menu();
-		}
+            //Draw menu with all popular games
+            else if ($media_url == "games") {
+                $menu = new GamesMenu();
+            }
+            //Draw menu with all popular channels
+            else if ($media_url == "channels") {
+                $menu = new ChannelsMenu();
+            }
+            //Draw main menu (GAME, CHANNEL)
+            else {
+                $menu = new MainMenu();
+            }
+            return $menu->generate_menu();
+        }
 
-		public function get_next_folder_view($media_url, &$plugin_cookies) {
-		}
+        public function get_next_folder_view($media_url, &$plugin_cookies) {
+        }
 
-		public function get_tv_info($media_url, &$plugin_cookies) {
-		}
+        public function get_tv_info($media_url, &$plugin_cookies) {
+        }
 
-		public function get_tv_stream_url($media_url, &$plugin_cookies) {
-		}
-
-		public function get_vod_info($media_url, &$plugin_cookies) {
+        public function get_tv_stream_url($media_url, &$plugin_cookies) {
+        }
+        //Play selected stream with selected quality
+        public function get_vod_info($media_url, &$plugin_cookies) {
             if (strpos($media_url, "stream_name:") === 0) {
                 $stream = new GamePlay(substr($media_url, 12),$this->stream_name);
                 return $stream->generatePlayInfo();
-            }
-		}
+            }   
+        }
 
-		public function get_vod_stream_url($media_url, &$plugin_cookies) {
-		}
+        public function get_vod_stream_url($media_url, &$plugin_cookies) {
+        }
 
-		public function get_regular_folder_items($media_url, $from_ndx, &$plugin_cookies) {
-		}
+        public function get_regular_folder_items($media_url, $from_ndx, &$plugin_cookies) {
+        }
 
-		public function get_day_epg($channel_id, $day_start_tm_sec, &$plugin_cookies) {
-		}
+        public function get_day_epg($channel_id, $day_start_tm_sec, &$plugin_cookies) {
+        }
 
-		public function get_tv_playback_url($channel_id, $archive_tm_sec, $protect_code, &$plugin_cookies) {
-		}
+        public function get_tv_playback_url($channel_id, $archive_tm_sec, $protect_code, &$plugin_cookies) {
+        }
 
-		public function change_tv_favorites($op_type, $channel_id, &$plugin_cookies) {
-		}
+        public function change_tv_favorites($op_type, $channel_id, &$plugin_cookies) {
+        }
 
-		public function handle_user_input(&$user_input, &$plugin_cookies) {
-		}
-	}
+        public function handle_user_input(&$user_input, &$plugin_cookies) {
+        }
+}
 ?>
