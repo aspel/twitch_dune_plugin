@@ -20,8 +20,8 @@
   <params>
      <program>main.php</program>
   </params>
-  <version_index>1</version_index>
-  <version>0.3</version>
+  <version_index>2</version_index>
+  <version>0.4</version>
   <check_update>
     <schema>1</schema>
     <url>http://pv.fex.cc/twitch/update.txt</url>
