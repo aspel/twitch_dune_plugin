@@ -1,5 +1,5 @@
 version_index=2
 version=0.4
-download_url=https://github.com/aspel/twitch_dune_plugin/archive/master.zip
+download_url=http://github.com/aspel/twitch_dune_plugin/archive/master.tar.gz
 space_needed=1400000
 last_critical_version_index=1
