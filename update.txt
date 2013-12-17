@@ -1,5 +1,5 @@
 version_index=2
 version=0.4
-download_url=http://pv.fex.cc/twitch/master.zip
+download_url=http://pv.fex.cc/twitch/master.tar.gz
 space_needed=1400000
 last_critical_version_index=1
