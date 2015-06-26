@@ -15,16 +15,27 @@
         <ip_address_required>yes</ip_address_required>
         <show_by_default>yes</show_by_default>
     </entry_point>
+    <entry_point>
+      <parent_media_url>setup://applications</parent_media_url>
+      <media_url>setup</media_url>
+      <caption>Twitch setup</caption>
+      <icon_url>plugin_file://img/twitch_logo.aai</icon_url>
+      <actions>
+        <key_enter>
+          <type>plugin_open_folder</type>
+        </key_enter>
+      </actions>
+    </entry_point>
   </entry_points>
   <type>php</type>
   <params>
      <program>main.php</program>
   </params>
-  <version_index>2</version_index>
-  <version>0.4</version>
+  <version_index>3</version_index>
+  <version>0.5</version>
   <check_update>
     <schema>1</schema>
-    <url>http://pv.fex.cc/twitch/update.txt</url>
+    <url>http://tw.fex.cc/twitch/update.txt</url>
     <timeout>0</timeout>
   </check_update>
 </dune_plugin>

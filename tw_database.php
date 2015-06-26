@@ -12,7 +12,7 @@ class TwDatabase {
 
     private function loadGames() {
         $this->database = array();
-        $this->addGames("https://api.twitch.tv/kraken/games/top");
+        $this->addGames("https://api.twitch.tv/kraken/games/top?limit=100");
     }
 
     private function addGames($url) {
@@ -23,6 +23,38 @@ class TwDatabase {
         }
     }
 }
+
+class Tw_Search_All_favorite {
+
+    public $database;
+
+    function __construct($name) {
+        $this->name = $name;
+        $this->streamName = $stream_name;
+        $this->loadGames();
+        hd_print($name.' FOOOOOOOOO');
+    }
+
+    private function loadGames() {
+        $this->database = array();
+        $game_name = urlencode($this->name);
+        $auth = $this->name;
+        $this->addGames("https://api.twitch.tv/kraken/streams/followed?oauth_token=".$auth);
+    }
+
+    private function addGames($url) {
+        try {
+            $data = HD::http_get_document($url);
+        }catch (Exception $e) {
+            hd_print ($e->getMessage());
+        }
+        $games = json_decode($data);
+        foreach($games->streams as $game) {
+            $this->database[] = $game;
+        }
+    }
+}
+
 
 class Tw_Search_All_stream {
 
@@ -37,7 +69,7 @@ class Tw_Search_All_stream {
     private function loadGames() {
         $this->database = array();
         $game_name = urlencode($this->name);
-        $this->addGames("https://api.twitch.tv/kraken/streams?limit=25");
+        $this->addGames("https://api.twitch.tv/kraken/streams?limit=100");
     }
 
     private function addGames($url) {
@@ -62,7 +94,7 @@ class Tw_Search_stream {
     private function loadGames() {
         $this->database = array();
         $game_name = urlencode($this->name);
-        $this->addGames("https://api.twitch.tv/kraken/streams?game=$game_name&limit=25");
+        $this->addGames("https://api.twitch.tv/kraken/streams?game=$game_name&limit=100");
     }
 
     private function addGames($url) {
@@ -88,7 +120,7 @@ class Tw_Search_quality {
         $tokens = json_decode($auth_data);
 
         $ts = "token=".urlencode($tokens->token)."&sig=".urlencode($tokens->sig);
-        $m3u8_url = "http://usher.twitch.tv/api/channel/hls/".$this->name.".m3u8?".$ts;
+        $m3u8_url = "http://usher.twitch.tv/api/channel/hls/".$this->name.".m3u8?".$ts."&allow_source=true";
         $hls_data = HD::http_get_document($m3u8_url);
         preg_match_all('|BANDWIDTH=(\d+).*VIDEO=\"(\w+)\"|', $hls_data, $match_video);
         preg_match_all('|http:(.*)|', $hls_data, $match_url);

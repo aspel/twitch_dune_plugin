@@ -1,40 +1,52 @@
 <?php
-    
-    require "main_menu.php";
-    require "games_menu.php";
-    require "games_search_menu.php";
-    require "games_quality_menu.php";
-    require "channels_menu.php";
-    require "game_play.php";
 
-    class TwitchPlugin implements DunePlugin {
+require_once 'lib/default_dune_plugin.php';
+require_once 'lib/utils.php';
+require "main_menu.php";
+require "games_menu.php";
+require "favorite_menu.php";
+require "games_search_menu.php";
+require "games_quality_menu.php";
+require "channels_menu.php";
+require "game_play.php";
 
+
+class TwitchPlugin extends DefaultDunePlugin implements UserInputHandler{
+
+    public function __construct()
+    {
+    }
         public $stream_name;
         
         public function get_folder_view($media_url, &$plugin_cookies) {
 
-            //Draw menu with all streams in selected game
             if (strpos($media_url, "search_games:") === 0) {
                 $menu = new GameSearchMenu(substr($media_url, 13));
             }
-            //Draw menu with all qualities (high,medium,low)
             else if (strpos($media_url, "streams:") === 0) {
                 $this->stream_name = substr($media_url, 8);
                 $menu = new GameQuality(substr($media_url, 8));
             }
-            //Draw menu with all popular games
             else if ($media_url == "games") {
                 $menu = new GamesMenu();
             }
-            //Draw menu with all popular channels
             else if ($media_url == "channels") {
                 $menu = new ChannelsMenu();
             }
-            //Draw main menu (GAME, CHANNEL)
+            else if ($media_url == "favorite") {
+                $menu = new FavoriteMenu($plugin_cookies->auth_token);
+            }
+            else if ($media_url == "setup") {
+                return $this->get_setup_folder_view($media_url, $plugin_cookies);
+            }
             else {
                 $menu = new MainMenu();
             }
             return $menu->generate_menu();
+        }
+        public function get_handler_id()
+        {
+            return 'twitch_handler';
         }
 
         public function get_next_folder_view($media_url, &$plugin_cookies) {
@@ -69,6 +81,52 @@
         }
 
         public function handle_user_input(&$user_input, &$plugin_cookies) {
+        hd_print('Setup: handle_user_input:');
+        foreach ($user_input as $key => $value)
+            hd_print("  $key => $value");
+
+        if ($user_input->action_type === 'apply'){
+            $control_id = $user_input->control_id;
+            $new_value = $user_input->auth_token;
+
+            hd_print("Setup: changing '$control_id' value to '$new_value'");
+
+            if ($control_id === 'btnSave'){
+                $plugin_cookies->auth_token = $new_value;
+            }
+        }
+
+        return null;
+        }
+
+        private function get_setup_folder_view($media_url, &$plugin_cookies)
+        {
+            $defs = array();
+
+            if (isset($plugin_cookies->auth_token))
+                $auth_token = $plugin_cookies->auth_token;
+            else
+                $auth_token = '';
+            
+            ControlFactory::add_text_field($defs,
+                $this, null,
+                'auth_token', 'Token: http://tw.fex.cc/ ', $auth_token,
+                0, 0, 0, true, 300);
+            ControlFactory::add_button($defs,
+                $handler = $this, $add_params = array(),
+                 $name='btnSave', $title=null, $caption='Save', $width=400);
+            
+            return array
+            (
+                PluginFolderView::multiple_views_supported  => false,
+                PluginFolderView::archive                   => null,
+                PluginFolderView::view_kind                 => PLUGIN_FOLDER_VIEW_CONTROLS,
+                PluginFolderView::data                      => array
+                (
+                    PluginControlsFolderView::defs => $defs,
+                    PluginControlsFolderView::initial_sel_ndx => -1,
+                )
+            );
         }
 }
 ?>

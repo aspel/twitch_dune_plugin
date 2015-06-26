@@ -25,14 +25,16 @@ class ActionFactory
         );
     }
 
-    public static function vod_play($vod_info=null)
+    public static function vod_play($vod_info = null)
     {
         return array
         (
             GuiAction::handler_string_id => PLUGIN_VOD_PLAY_ACTION_ID,
-            GuiAction::data => array(
-                PluginVodPlayActionData::vod_info => $vod_info,
-            ),
+            GuiAction::data =>
+                array
+                (
+                    PluginVodPlayActionData::vod_info => $vod_info,
+                ),
         );
     }
 
@@ -54,8 +56,16 @@ class ActionFactory
     }
 
     public static function show_dialog($title, $defs,
-        $close_by_return = false, $preferred_width = 0)
+        $close_by_return = false, $preferred_width = 0,
+        $attrs = array())
     {
+        $initial_sel_ndx = isset($attrs['initial_sel_ndx']) ?
+            $attrs['initial_sel_ndx'] : -1;
+        $actions = isset($attrs['actions']) ? $attrs['actions'] : null;
+        $timer = isset($attrs['timer']) ? $attrs['timer'] : null;
+        $min_item_title_width = isset($attrs['min_item_title_width']) ?
+            $attrs['min_item_title_width'] : 0;
+
         return array
         (
             GuiAction::handler_string_id => SHOW_DIALOG_ACTION_ID,
@@ -67,6 +77,10 @@ class ActionFactory
                     ShowDialogActionData::defs => $defs,
                     ShowDialogActionData::close_by_return => $close_by_return,
                     ShowDialogActionData::preferred_width => $preferred_width,
+                    ShowDialogActionData::min_item_title_width => $min_item_title_width,
+                    ShowDialogActionData::initial_sel_ndx => $initial_sel_ndx,
+                    ShowDialogActionData::actions => $actions,
+                    ShowDialogActionData::timer => $timer,
                 ),
             GuiAction::params => null,
         );
@@ -98,8 +112,8 @@ class ActionFactory
 
 //        ControlFactory::add_vgap($defs, 50);
 
-        ControlFactory::add_custom_close_dialog_and_apply_buffon($defs,
-            'ok', 'OK', 300, $post_action);
+        ControlFactory::add_custom_close_dialog_and_apply_button($defs,
+            'ok', 'OK', 250, $post_action, true);
 
         return self::show_dialog($title, $defs);
     }
@@ -191,6 +205,64 @@ class ActionFactory
                 PluginClearArchiveCacheActionData::post_action => $post_action,
              ),
         );
+    }
+
+    public static function launch_media_url($url, $post_action=null)
+    {
+        return array
+        (
+             GuiAction::handler_string_id => LAUNCH_MEDIA_URL_ACTION_ID,
+             GuiAction::data =>
+             array
+             (
+                LaunchMediaUrlActionData::url => $url,
+                LaunchMediaUrlActionData::post_action => $post_action,
+             ),
+        );
+    }
+
+    public static function show_main_screen($post_action=null)
+    {
+        return array
+        (
+             GuiAction::handler_string_id => SHOW_MAIN_SCREEN_ACTION_ID,
+             GuiAction::data =>
+             array
+             (
+                ShowMainScreenActionData::post_action => $post_action,
+             ),
+        );
+    }
+
+    public static function handle_user_input($params)
+    {
+        return array
+        (
+            GuiAction::handler_string_id => PLUGIN_HANDLE_USER_INPUT_ACTION_ID,
+            GuiAction::caption => null,
+            GuiAction::data => null,
+            GuiAction::params => $params,
+        );
+    }
+
+    public static function change_behaviour($actions, $timer=null, $post_action=null)
+    {
+        return array
+        (
+             GuiAction::handler_string_id => CHANGE_BEHAVIOUR_ACTION_ID,
+             GuiAction::data =>
+             array
+             (
+                ChangeBehaviourActionData::actions => $actions,
+                ChangeBehaviourActionData::timer => $timer,
+                ChangeBehaviourActionData::post_action => $post_action,
+             ),
+        );
+    }
+
+    public static function timer($delay_ms)
+    {
+        return array(GuiTimerDef::delay_ms => $delay_ms);
     }
 }
 
