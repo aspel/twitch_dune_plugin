@@ -16,7 +16,7 @@ class TwitchPlugin extends DefaultDunePlugin implements UserInputHandler{
     public function __construct()
     {
     }
-        public $stream_name;
+        public $stream_name, $img;
         
         public function get_folder_view($media_url, &$plugin_cookies) {
 
@@ -26,6 +26,8 @@ class TwitchPlugin extends DefaultDunePlugin implements UserInputHandler{
             else if (strpos($media_url, "streams:") === 0) {
                 $this->stream_name = substr($media_url, 8);
                 $menu = new GameQuality(substr($media_url, 8));
+                $jdimg = new Tw_Search_quality($this->stream_name);
+                $this->img = $jdimg->getIMG();
             }
             else if ($media_url == "games") {
                 $menu = new GamesMenu();
@@ -53,14 +55,16 @@ class TwitchPlugin extends DefaultDunePlugin implements UserInputHandler{
         }
 
         public function get_tv_info($media_url, &$plugin_cookies) {
+
         }
 
         public function get_tv_stream_url($media_url, &$plugin_cookies) {
         }
+
         //Play selected stream with selected quality
         public function get_vod_info($media_url, &$plugin_cookies) {
             if (strpos($media_url, "stream_name:") === 0) {
-                $stream = new GamePlay(substr($media_url, 12),$this->stream_name);
+                $stream = new GamePlay(substr($media_url, 12),$this->stream_name,$this->img);
                 return $stream->generatePlayInfo();
             }   
         }
@@ -110,8 +114,8 @@ class TwitchPlugin extends DefaultDunePlugin implements UserInputHandler{
             
             ControlFactory::add_text_field($defs,
                 $this, null,
-                'auth_token', 'Token: http://tw.fex.cc/ ', $auth_token,
-                0, 0, 0, true, 300);
+                'auth_token', 'Token from: http://tw.fex.cc/ ', $auth_token,
+                0, 0, 0, true, 500);
             ControlFactory::add_button($defs,
                 $handler = $this, $add_params = array(),
                  $name='btnSave', $title=null, $caption='Save', $width=400);

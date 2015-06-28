@@ -4,10 +4,11 @@ class GamePlay {
         
     private $fileIndex;
                 
-    function __construct($stream_url,$stream_name) {
+    function __construct($stream_url,$stream_name,$stream_img) {
 
         $this->streamURL = $stream_url;
         $this->streamName = $stream_name; 
+        $this->streamIMG = $stream_img; 
 
     }
                 
@@ -18,6 +19,7 @@ class GamePlay {
                                         
             PluginVodInfo::name           => $this->streamName,
             PluginVodInfo::description    => "",
+            PluginVodInfo::poster_url     => $this->streamIMG,
             PluginVodInfo::series         =>
                 array(
                     array(

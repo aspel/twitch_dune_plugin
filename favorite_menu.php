@@ -17,7 +17,11 @@ class FavoriteMenu extends BaseMenu {
         $items = array();
 
         foreach ($database->database as $game) {
-            $items[] = array("caption" => $game->channel->display_name."  -  ".$game->viewers." - ".$game->channel->status, "url" => "streams:".$game->channel->name);
+            if ($game->channel->url == "setup"){
+                $items[] = array("caption" => $game->channel->display_name,  "url" => $game->channel->url);
+            }else{
+                $items[] = array("caption" => $game->channel->display_name."  -  ".$game->viewers." - ".$game->channel->status, "url" => "streams:".$game->channel->name);
+            }
         }
 
         return $this->create_folder_view($items);

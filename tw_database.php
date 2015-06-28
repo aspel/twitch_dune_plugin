@@ -26,13 +26,13 @@ class TwDatabase {
 
 class Tw_Search_All_favorite {
 
-    public $database;
+    public $database,  $data;
 
     function __construct($name) {
         $this->name = $name;
         $this->streamName = $stream_name;
         $this->loadGames();
-        hd_print($name.' FOOOOOOOOO');
+        hd_print('Token:'.$name);
     }
 
     private function loadGames() {
@@ -47,11 +47,14 @@ class Tw_Search_All_favorite {
             $data = HD::http_get_document($url);
         }catch (Exception $e) {
             hd_print ($e->getMessage());
+            $data = '{ "streams": [ { "channel":{ "display_name":"No Token, please enter your token in settings->twitch.tv", "url":"setup" } } ] }';
         }
         $games = json_decode($data);
+        hd_print($games);
         foreach($games->streams as $game) {
             $this->database[] = $game;
         }
+        
     }
 }
 
@@ -107,11 +110,18 @@ class Tw_Search_stream {
 }
 class Tw_Search_quality {
 
-    public $database;
+    public $database, $img;
 
     function __construct($name) {
         $this->name = $name;
         $this->loadQuality();
+    }
+
+    public function getIMG() {
+        $top_url = "https://api.twitch.tv/kraken/users/".$this->name;
+        $data = HD::http_get_document($top_url);
+        $jd = json_decode($data);
+        return $jd->logo;
     }
 
     private function loadQuality() {
