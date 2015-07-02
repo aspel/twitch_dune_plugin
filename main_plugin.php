@@ -16,7 +16,7 @@ class TwitchPlugin extends DefaultDunePlugin implements UserInputHandler{
     public function __construct()
     {
     }
-        public $stream_name, $img;
+        public $stream_name, $img, $status_stream;
         
         public function get_folder_view($media_url, &$plugin_cookies) {
 
@@ -28,6 +28,7 @@ class TwitchPlugin extends DefaultDunePlugin implements UserInputHandler{
                 $menu = new GameQuality(substr($media_url, 8));
                 $jdimg = new Tw_Search_quality($this->stream_name);
                 $this->img = $jdimg->getIMG();
+                $this->status_stream = $jdimg->getStatus();
             }
             else if ($media_url == "games") {
                 $menu = new GamesMenu();
@@ -64,7 +65,7 @@ class TwitchPlugin extends DefaultDunePlugin implements UserInputHandler{
         //Play selected stream with selected quality
         public function get_vod_info($media_url, &$plugin_cookies) {
             if (strpos($media_url, "stream_name:") === 0) {
-                $stream = new GamePlay(substr($media_url, 12),$this->stream_name,$this->img);
+                $stream = new GamePlay(substr($media_url, 12),$this->stream_name,$this->img,$this->status_stream);
                 return $stream->generatePlayInfo();
             }   
         }

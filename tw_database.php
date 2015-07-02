@@ -123,6 +123,14 @@ class Tw_Search_quality {
         $jd = json_decode($data);
         return $jd->logo;
     }
+    public function getStatus() {
+        $top_url = "https://api.twitch.tv/kraken/streams/".$this->name;
+        $data = HD::http_get_document($top_url);
+        $jd = json_decode($data);
+        $descript = $jd->stream->channel->status."\nViewers: ". $jd->stream->viewers;
+        return $descript;
+    }
+
 
     private function loadQuality() {
         $top_url = "http://api.twitch.tv/api/channels/".$this->name."/access_token";
@@ -132,7 +140,7 @@ class Tw_Search_quality {
         $ts = "token=".urlencode($tokens->token)."&sig=".urlencode($tokens->sig);
         $m3u8_url = "http://usher.twitch.tv/api/channel/hls/".$this->name.".m3u8?".$ts."&allow_source=true";
         $hls_data = HD::http_get_document($m3u8_url);
-        preg_match_all('|BANDWIDTH=(\d+).*VIDEO=\"(\w+)\"|', $hls_data, $match_video);
+        preg_match_all('|BANDWIDTH=(\d+),RESOLUTION=(.+),VIDEO=\"(\w+)\"|', $hls_data, $match_video);
         preg_match_all('|http:(.*)|', $hls_data, $match_url);
         array_push($match_video,$match_url[0]);
         $this->database = $match_video;
