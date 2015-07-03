@@ -2,9 +2,7 @@
 
 class T
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /////////////////////////////////////////////////////////////////////// 
 
@@ -19,4 +17,3 @@ class T
     }
 }
 
-?>

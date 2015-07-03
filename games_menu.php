@@ -1,23 +1,22 @@
 <?php
 
-	require_once "base_menu.php";
-	require_once "tw_database.php";
-	
-	class GamesMenu extends BaseMenu {
+require_once "base_menu.php";
+require_once "tw_database.php";
 
-		public function generate_menu() {
+class GamesMenu extends BaseMenu
+{
+    public function generate_menu()
+    {
+        $database = new TwDatabase();
 
-			$database = new TwDatabase();
-			
-			$items = array();
-		
-            foreach ($database->database as $game) {
-				$items[] = array("caption" => $game->name, "url" => "search_games:".$game->name);
-			}
-			
-            usort($items, array("BaseMenu", "CompareCaption"));
-			
-			return $this->create_folder_view($items);
+        $items = array();
+
+        foreach ($database->database as $game) {
+            $items[] = array("caption" => $game->name, "url" => "search_games:" . $game->name);
         }
+
+        usort($items, array("BaseMenu", "CompareCaption"));
+
+        return $this->create_folder_view($items);
     }
-?>
+}

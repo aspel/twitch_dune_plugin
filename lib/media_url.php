@@ -23,32 +23,28 @@ class MediaURL
 
     public function __set($key, $value)
     {
-        if (is_null($this->map))
-            $this->map = (object) array();
-        
+        if (is_null($this->map)) $this->map = (object)array();
+
         $this->map->{$key} = $value;
     }
 
     public function __unset($key)
     {
-        if (is_null($this->map))
-            return;
+        if (is_null($this->map)) return;
 
         unset($this->map->{$key});
     }
 
     public function __get($key)
     {
-        if (is_null($this->map))
-            return null;
+        if (is_null($this->map)) return null;
 
         return isset($this->map->{$key}) ? $this->map->{$key} : null;
     }
 
     public function __isset($key)
     {
-        if (is_null($this->map))
-            return false;
+        if (is_null($this->map)) return false;
 
         return isset($this->map->{$key});
     }
@@ -57,20 +53,23 @@ class MediaURL
     ///////////////////////////////////////////////////////////////////////
 
     public function get_raw_string()
-    { return $this->str; }
+    {
+        return $this->str;
+    }
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 
     public static function encode($m)
-    { return json_encode($m); }
+    {
+        return json_encode($m);
+    }
 
     ///////////////////////////////////////////////////////////////////////
 
     public static function decode($s)
     {
-        if (substr($s, 0, 1) !== '{')
-            return new MediaURL($s, null);
+        if (substr($s, 0, 1) !== '{') return new MediaURL($s, null);
 
         return new MediaURL($s, json_decode($s));
     }

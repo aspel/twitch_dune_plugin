@@ -23,12 +23,10 @@ abstract class AbstractRegularScreen implements RegularScreen
 
     protected function ensure_folder_views(&$plugin_cookies)
     {
-        if (is_null($this->folder_views))
-        {
+        if (is_null($this->folder_views)) {
             $this->folder_views = $this->do_get_folder_views($plugin_cookies);
 
-            if (is_null($this->folder_views))
-                throw new Exception("Failed to get folder views");
+            if (is_null($this->folder_views)) throw new Exception("Failed to get folder views");
         }
     }
 
@@ -47,7 +45,9 @@ abstract class AbstractRegularScreen implements RegularScreen
     ///////////////////////////////////////////////////////////////////////
 
     public function get_id()
-    { return $this->id; }
+    {
+        return $this->id;
+    }
 
     ///////////////////////////////////////////////////////////////////////
 
@@ -63,18 +63,14 @@ abstract class AbstractRegularScreen implements RegularScreen
 
         $folder_view = $this->folder_views[$idx];
 
-        $folder_view[PluginRegularFolderView::actions] =
-            $this->get_action_map($media_url, $plugin_cookies);
+        $folder_view[PluginRegularFolderView::actions] = $this->get_action_map($media_url, $plugin_cookies);
 
-        $folder_view[PluginRegularFolderView::initial_range] = 
-            $this->get_folder_range($media_url, 0, $plugin_cookies);
+        $folder_view[PluginRegularFolderView::initial_range] = $this->get_folder_range($media_url, 0, $plugin_cookies);
 
         $archive = $this->get_archive($media_url, $plugin_cookies);
-        $archive_def = is_null($archive) ? null :
-            $archive->get_archive_def();
+        $archive_def = is_null($archive) ? null : $archive->get_archive_def();
 
-        return array
-        (
+        return array(
             PluginFolderView::multiple_views_supported  => (count($this->folder_views) > 1 ? 1 : 0),
             PluginFolderView::archive                   => $archive_def,
             PluginFolderView::view_kind                 => PLUGIN_FOLDER_VIEW_REGULAR,
@@ -89,11 +85,10 @@ abstract class AbstractRegularScreen implements RegularScreen
         $this->ensure_folder_views($plugin_cookies);
 
         $idx = $this->get_folder_view_index($plugin_cookies);
-        
+
         ++$idx;
 
-        if ($idx >= count($this->folder_views))
-            $idx = 0;
+        if ($idx >= count($this->folder_views)) $idx = 0;
 
         $plugin_cookies->{$this->folder_view_index_attr_name} = $idx;
 
@@ -106,17 +101,14 @@ abstract class AbstractRegularScreen implements RegularScreen
     {
         $this->ensure_folder_views($plugin_cookies);
 
-        if (!isset($plugin_cookies->{$this->folder_view_index_attr_name}))
-            return 0;
+        if (!isset($plugin_cookies->{$this->folder_view_index_attr_name})) return 0;
 
         $idx = $plugin_cookies->{$this->folder_view_index_attr_name};
-        
+
         $cnt = count($this->folder_views);
 
-        if ($idx < 1)
-            $idx = 0;
-        else if ($idx >= $cnt)
-            $idx = $cnt - 1;
+        if ($idx < 1) $idx = 0;
+        else if ($idx >= $cnt) $idx = $cnt - 1;
 
         return intval($idx);
     }
@@ -124,7 +116,9 @@ abstract class AbstractRegularScreen implements RegularScreen
     ///////////////////////////////////////////////////////////////////////
 
     public function get_archive(MediaURL $media_url, &$plugin_cookies)
-    { return null; }
+    {
+        return null;
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////

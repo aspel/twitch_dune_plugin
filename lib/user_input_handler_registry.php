@@ -1,6 +1,5 @@
 <?php
 
-
 require_once('lib/user_input_handler.php');
 
 class UserInputHandlerRegistry
@@ -9,31 +8,29 @@ class UserInputHandlerRegistry
 
     public static function get_instance()
     {
-        if (is_null(self::$instance))
-            self::$instance = new UserInputHandlerRegistry();
+        if (is_null(self::$instance)) self::$instance = new UserInputHandlerRegistry();
         return self::$instance;
     }
 
-    public static function create_action(UserInputHandler $handler,
-        $name, $add_params = null)
+    public static function create_action(
+        UserInputHandler $handler,
+        $name,
+        $add_params = null
+    )
     {
         $params = array(
             'handler_id' => $handler->get_handler_id(),
-            'control_id' => $name);
-        if (isset($add_params))
-            $params = array_merge($params, $add_params);
+            'control_id' => $name
+        );
+        if (isset($add_params)) $params = array_merge($params, $add_params);
 
-        return array
-        (
+        return array(
             GuiAction::handler_string_id => PLUGIN_HANDLE_USER_INPUT_ACTION_ID,
             GuiAction::caption => null,
             GuiAction::data => null,
             GuiAction::params => $params,
         );
     }
-
-    
-    
 
     private $handlers;
 
@@ -44,15 +41,15 @@ class UserInputHandlerRegistry
 
     public function handle_user_input(&$user_input, &$plugin_cookies)
     {
-        if (!isset($user_input->handler_id))
-            return null;
+        if (!isset($user_input->handler_id)) return null;
 
         $handler_id = $user_input->handler_id;
-        if (!isset($this->handlers[$handler_id]))
-            return null;
+        if (!isset($this->handlers[$handler_id])) return null;
 
         return $this->handlers[$handler_id]->handle_user_input(
-            $user_input, $plugin_cookies);
+            $user_input,
+            $plugin_cookies
+        );
     }
 
     public function register_handler(UserInputHandler $handler)
@@ -62,5 +59,3 @@ class UserInputHandlerRegistry
     }
 }
 
-
-?>

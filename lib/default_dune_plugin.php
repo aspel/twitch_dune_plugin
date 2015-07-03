@@ -30,8 +30,7 @@ class DefaultDunePlugin implements DunePlugin
 
     protected function add_screen($scr)
     {
-        if (isset($this->screens[$scr->get_id()]))
-        {
+        if (isset($this->screens[$scr->get_id()])) {
             hd_print("Error: screen (id: " . $scr->get_id() . ") already registered.");
             throw new Exception('Screen already registered');
         }
@@ -43,8 +42,7 @@ class DefaultDunePlugin implements DunePlugin
 
     protected function get_screen_by_id($screen_id)
     {
-        if (isset($this->screens[$screen_id]))
-            return $this->screens[$screen_id];
+        if (isset($this->screens[$screen_id])) return $this->screens[$screen_id];
 
         hd_print("Error: no screen with id '$screen_id' found.");
         throw new Exception('Screen not found');
@@ -54,10 +52,7 @@ class DefaultDunePlugin implements DunePlugin
 
     protected function get_screen_by_url($media_url)
     {
-        $screen_id = 
-            isset($media_url->screen_id) ?
-            $media_url->screen_id :
-            $media_url->get_raw_string();
+        $screen_id = isset($media_url->screen_id) ? $media_url->screen_id : $media_url->get_raw_string();
 
         return $this->get_screen_by_id($screen_id);
     }
@@ -72,10 +67,9 @@ class DefaultDunePlugin implements DunePlugin
     {
         $media_url = MediaURL::decode($media_url_str);
 
-        return
-            $this->
-                get_screen_by_url($media_url)->
-                    get_folder_view($media_url, $plugin_cookies);
+        return $this
+            ->get_screen_by_url($media_url)
+            ->get_folder_view($media_url, $plugin_cookies);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -84,21 +78,23 @@ class DefaultDunePlugin implements DunePlugin
     {
         $media_url = MediaURL::decode($media_url_str);
 
-        return
-            $this->
-                get_screen_by_url($media_url)->
-                    get_next_folder_view($media_url, $plugin_cookies);
+        return $this
+            ->get_screen_by_url($media_url)
+            ->get_next_folder_view($media_url, $plugin_cookies);
     }
 
     ///////////////////////////////////////////////////////////////////////////
 
-    public function get_regular_folder_items($media_url_str, $from_ndx,
-        &$plugin_cookies)
+    public function get_regular_folder_items(
+        $media_url_str,
+        $from_ndx,
+        &$plugin_cookies
+    )
     {
         $media_url = MediaURL::decode($media_url_str);
 
-        return $this->get_screen_by_url($media_url)->
-            get_folder_range($media_url, $from_ndx, $plugin_cookies);
+        return $this->get_screen_by_url($media_url)
+            ->get_folder_range($media_url, $from_ndx, $plugin_cookies);
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -109,8 +105,7 @@ class DefaultDunePlugin implements DunePlugin
 
     public function get_tv_info($media_url_str, &$plugin_cookies)
     {
-        if (is_null($this->tv))
-            throw new Exception('TV is not supported');
+        if (is_null($this->tv)) throw new Exception('TV is not supported');
 
         $media_url = MediaURL::decode($media_url_str);
 
@@ -120,9 +115,8 @@ class DefaultDunePlugin implements DunePlugin
     ///////////////////////////////////////////////////////////////////////
 
     public function get_tv_stream_url($playback_url, &$plugin_cookies)
-    { 
-        if (is_null($this->tv))
-            throw new Exception('TV is not supported');
+    {
+        if (is_null($this->tv)) throw new Exception('TV is not supported');
 
         return $this->tv->get_tv_stream_url($playback_url, $plugin_cookies);
     }
@@ -131,18 +125,16 @@ class DefaultDunePlugin implements DunePlugin
 
     public function get_tv_playback_url($channel_id, $archive_ts, $protect_code, &$plugin_cookies)
     {
-        if (is_null($this->tv))
-            throw new Exception('TV is not supported');
+        if (is_null($this->tv)) throw new Exception('TV is not supported');
 
-        return $this-> tv->get_tv_playback_url($channel_id, $archive_ts, $protect_code, $plugin_cookies);
+        return $this->tv->get_tv_playback_url($channel_id, $archive_ts, $protect_code, $plugin_cookies);
     }
 
     ///////////////////////////////////////////////////////////////////////
 
     public function get_day_epg($channel_id, $day_start_ts, &$plugin_cookies)
     {
-        if (is_null($this->tv))
-            throw new Exception('TV is not supported');
+        if (is_null($this->tv)) throw new Exception('TV is not supported');
 
         return $this->tv->get_day_epg($channel_id, $day_start_ts, $plugin_cookies);
     }
@@ -151,8 +143,7 @@ class DefaultDunePlugin implements DunePlugin
 
     public function change_tv_favorites($fav_op_type, $channel_id, &$plugin_cookies)
     {
-        if (is_null($this->tv))
-            throw new Exception('TV is not supported');
+        if (is_null($this->tv)) throw new Exception('TV is not supported');
 
         return $this->tv->change_tv_favorites($fav_op_type, $channel_id, $plugin_cookies);
     }
@@ -165,8 +156,7 @@ class DefaultDunePlugin implements DunePlugin
 
     public function get_vod_info($media_url_str, &$plugin_cookies)
     {
-        if (is_null($this->vod))
-            throw new Exception('VOD is not supported');
+        if (is_null($this->vod)) throw new Exception('VOD is not supported');
 
         $media_url = MediaURL::decode($media_url_str);
 
@@ -177,8 +167,7 @@ class DefaultDunePlugin implements DunePlugin
 
     public function get_vod_stream_url($playback_url, &$plugin_cookies)
     {
-        if (is_null($this->vod))
-            throw new Exception('VOD is not supported');
+        if (is_null($this->vod)) throw new Exception('VOD is not supported');
 
         return $this->vod->get_vod_stream_url($playback_url, $plugin_cookies);
     }
@@ -192,7 +181,9 @@ class DefaultDunePlugin implements DunePlugin
     public function handle_user_input(&$user_input, &$plugin_cookies)
     {
         return UserInputHandlerRegistry::get_instance()->handle_user_input(
-            $user_input, $plugin_cookies);
+            $user_input,
+            $plugin_cookies
+        );
     }
 }
 
