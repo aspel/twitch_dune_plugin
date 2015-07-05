@@ -32,7 +32,20 @@ class ControlFactory
             GuiControlDef::params => $params,
         );
     }
-
+    public static function add_multiline_label(&$defs, $title, $text, $lines = 7)
+    {
+        $defs[] = array(
+            GuiControlDef::name => '',
+            GuiControlDef::title => $title,
+            GuiControlDef::kind => GUI_CONTROL_LABEL,
+            GuiControlDef::specific_def => array(
+                GuiLabelDef::caption => $text,
+            ),
+            GuiControlDef::params => array(
+                'max_lines' => $lines,
+            )
+        );
+    }
     public static function add_button(
         &$defs,
         $handler,

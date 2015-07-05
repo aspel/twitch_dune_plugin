@@ -48,7 +48,7 @@ class ActionFactory
     public static function show_dialog(
         $title,
         $defs,
-        $close_by_return = false,
+        $close_by_return = true,
         $preferred_width = 0,
         $attrs = array()
     )
@@ -57,6 +57,8 @@ class ActionFactory
         $actions = isset($attrs['actions']) ? $attrs['actions'] : null;
         $timer = isset($attrs['timer']) ? $attrs['timer'] : null;
         $min_item_title_width = isset($attrs['min_item_title_width']) ? $attrs['min_item_title_width'] : 0;
+
+        $dialog_params = isset($attrs['dialog_params']) ? $attrs['dialog_params'] : array();
 
         return array(
             GuiAction::handler_string_id => SHOW_DIALOG_ACTION_ID,
@@ -70,6 +72,7 @@ class ActionFactory
                 ShowDialogActionData::initial_sel_ndx => $initial_sel_ndx,
                 ShowDialogActionData::actions => $actions,
                 ShowDialogActionData::timer => $timer,
+                ShowDialogActionData::params => $dialog_params,
             ),
             GuiAction::params => null,
         );
@@ -92,22 +95,33 @@ class ActionFactory
         return self::close_dialog_and_run(null);
     }
 
-    public static function show_title_dialog($title, $post_action = null)
+    public static function close_and_run($post_action = null)
+    {
+        return array(
+            GuiAction::handler_string_id => CLOSE_AND_RUN_ACTION_ID,
+            GuiAction::caption => null,
+            GuiAction::data => array(
+                CloseAndRunActionData::post_action => $post_action,
+            ),
+            GuiAction::params => null,
+        );
+    }
+
+    public static function show_title_dialog($title, $post_action = null, $attrs)
     {
         $defs = array();
 
 //        ControlFactory::add_vgap($defs, 50);
 
-        ControlFactory::add_custom_close_dialog_and_apply_button(
+        ControlFactory::add_custom_close_dialog_and_apply_buffon(
             $defs,
-            'ok',
+            'apply_subscription',
             'OK',
-            250,
-            $post_action,
-            true
+            300,
+            $post_action
         );
 
-        return self::show_dialog($title, $defs);
+        return self::show_dialog($title, $defs, false, 0, $attrs);
     }
 
     public static function status($status)
@@ -197,6 +211,17 @@ class ActionFactory
         );
     }
 
+    public static function plugin_system($exec, $post_action = null)
+    {
+        return array(
+            GuiAction::handler_string_id => LAUNCH_MEDIA_URL_ACTION_ID,
+            GuiAction::data => array(
+                PluginSystemActionData::run_string => $exec,
+                PluginSystemActionData::post_action => $post_action,
+            ),
+        );
+    }
+
     public static function show_main_screen($post_action = null)
     {
         return array(
@@ -225,6 +250,113 @@ class ActionFactory
                 ChangeBehaviourActionData::actions => $actions,
                 ChangeBehaviourActionData::timer => $timer,
                 ChangeBehaviourActionData::post_action => $post_action,
+            ),
+        );
+    }
+
+    public static function update_info_block(
+        $text_above,
+        $text_color = null,
+        $text_halo = false,
+        $text_y_offset = 0,
+        $post_action = null
+    )
+    {
+        return array(
+            GuiAction::handler_string_id => PLUGIN_UPDATE_INFO_BLOCK_ACTION_ID,
+            GuiAction::data => array(
+                PluginUpdateInfoBlockActionData::text_above => $text_above,
+                PluginUpdateInfoBlockActionData::text_color => $text_color,
+                PluginUpdateInfoBlockActionData::text_halo => $text_halo,
+                PluginUpdateInfoBlockActionData::text_y_offset => $text_y_offset,
+                PluginUpdateInfoBlockActionData::post_action => $post_action,
+            ),
+        );
+    }
+
+    public static function update_epg(
+        $channel_id,
+        $clear,
+        $day_start_tm_sec = 0,
+        $programs = null,
+        $post_action = null
+    )
+    {
+        return array(
+            GuiAction::handler_string_id => PLUGIN_UPDATE_EPG_ACTION_ID,
+            GuiAction::data => array(
+                PluginUpdateEpgActionData::channel_id => $channel_id,
+                PluginUpdateEpgActionData::clear => $clear,
+                PluginUpdateEpgActionData::day_start_tm_sec => $day_start_tm_sec,
+                PluginUpdateEpgActionData::programs => $programs,
+                PluginUpdateEpgActionData::post_action => $post_action,
+            ),
+        );
+    }
+
+    public static function add_osd_image(
+        &$comps,
+        $image_url,
+        $x,
+        $y,
+        $image_width = 0,
+        $image_height = 0
+    )
+    {
+        $comps[] = array(
+            PluginOsdComponent::image_url => $image_url,
+            PluginOsdComponent::x => $x,
+            PluginOsdComponent::y => $y,
+            PluginOsdComponent::image_width => $image_width,
+            PluginOsdComponent::image_height => $image_height
+        );
+    }
+
+    public static function add_osd_text(
+        &$comps,
+        $text,
+        $x,
+        $y,
+        $text_font_size = PLUGIN_FONT_NORMAL,
+        $text_color = "15",
+        $text_halo = false
+    )
+    {
+        $comps[] = array(
+            PluginOsdComponent::text => $text,
+            PluginOsdComponent::x => $x,
+            PluginOsdComponent::y => $y,
+            PluginOsdComponent::text_font_size => $text_font_size,
+            PluginOsdComponent::text_color => $text_color,
+            PluginOsdComponent::text_halo => $text_halo
+        );
+    }
+
+    public static function update_osd($comps, $post_action = null)
+    {
+        return array(
+            GuiAction::handler_string_id => PLUGIN_UPDATE_OSD_ACTION_ID,
+            GuiAction::data => array(
+                PluginUpdateOsdActionData::components => $comps,
+                PluginUpdateOsdActionData::post_action => $post_action,
+            ),
+        );
+    }
+
+    public static function change_settings(
+        $settings,
+        $reboot,
+        $restart_gui,
+        $post_action = null
+    )
+    {
+        return array(
+            GuiAction::handler_string_id => CHANGE_SETTINGS_ACTION_ID,
+            GuiAction::data => array(
+                ChangeSettingsActionData::settings => $settings,
+                ChangeSettingsActionData::reboot => $reboot,
+                ChangeSettingsActionData::restart_gui => $restart_gui,
+                ChangeSettingsActionData::post_action => $post_action,
             ),
         );
     }

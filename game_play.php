@@ -12,7 +12,11 @@ class GamePlay
         $this->streamStatus = $stream_status;
     }
 
-    public function generatePlayInfo()
+    public function get_handler_id()
+    {
+        return 'twitch_handler';
+    }
+    public function generatePlayInfo($q)
     {
         return array(
 
@@ -30,6 +34,7 @@ class GamePlay
             PluginVodInfo::initial_position_ms   => 0,
             PluginVodInfo::advert_mode           => false,
             PluginVodInfo::ip_address_required   => true,
+            PluginVodInfo::actions               => $q,
             PluginVodInfo::valid_time_required   => false
         );
     }
