@@ -1,5 +1,5 @@
-version_index=6
-version=0.5.6
+version_index=7
+version=0.5.7
 download_url=http://tw.fex.cc/twitch/master.tar.gz
 space_needed=1400000
 last_critical_version_index=1

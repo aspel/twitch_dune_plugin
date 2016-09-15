@@ -13,7 +13,7 @@ require "game_play.php";
 class TwitchPlugin extends DefaultDunePlugin implements UserInputHandler
 {
     public function __construct() {}
-    public $stream_name, $img, $status_stream, $stream_chat = "", $install_dir;
+    public $game_name, $stream_name, $img, $status_stream, $stream_chat = "", $install_dir;
 
     public function get_folder_view($media_url, &$plugin_cookies)
     {
@@ -25,6 +25,7 @@ class TwitchPlugin extends DefaultDunePlugin implements UserInputHandler
             $jdimg = new Tw_Search_quality($this->stream_name);
             $this->img = $jdimg->getIMG();
             $this->status_stream = $jdimg->getStatus();
+            $this->game_name = $jdimg->getGameName();
             $this->install_dir = DuneSystem::$properties["install_dir_path"];
             shell_exec($this->install_dir . "/bin/irc.sh start " . $this->stream_name);
         } else if ($media_url == "games") {
@@ -60,7 +61,7 @@ class TwitchPlugin extends DefaultDunePlugin implements UserInputHandler
             GUI_EVENT_PLAYBACK_STOP => UserInputHandlerRegistry::create_action($this, 'stop_irc')
         );
         if (strpos($media_url, "stream_name:") === 0) {
-            $stream = new GamePlay(substr($media_url, 12), $this->stream_name, $this->img, $this->status_stream);
+            $stream = new GamePlay(substr($media_url, 12), $this->stream_name, $this->img, $this->status_stream, $this->game_name);
             return $stream->generatePlayInfo($q);
         }
     }

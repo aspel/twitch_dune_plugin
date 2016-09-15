@@ -4,12 +4,13 @@ class GamePlay
 {
     private $fileIndex;
 
-    function __construct($stream_url, $stream_name, $stream_img, $stream_status)
+    function __construct($stream_url, $stream_name, $stream_img, $stream_status, $game_name)
     {
         $this->streamURL = $stream_url;
         $this->streamName = $stream_name;
         $this->streamIMG = $stream_img;
         $this->streamStatus = $stream_status;
+        $this->streamGameName = $game_name;
     }
 
     public function get_handler_id()
@@ -20,7 +21,7 @@ class GamePlay
     {
         return array(
 
-            PluginVodInfo::name           => $this->streamName,
+            PluginVodInfo::name           => "$this->streamName - $this->streamGameName",
             PluginVodInfo::description    => "$this->streamStatus",
             PluginVodInfo::poster_url     => $this->streamIMG,
             PluginVodInfo::series         => array(

@@ -132,23 +132,31 @@ class Tw_Search_quality
 
     public function getIMG()
     {
-        $top_url = "https://api.twitch.tv/kraken/users/" . $this->name;
+        $top_url = "https://api.twitch.tv/kraken/users/" . $this->name . "?client_id=9w0wfeb3nd0iuovyl0i32kpyyzktyh9";
         $data = HD::http_get_document($top_url);
         $jd = json_decode($data);
         return $jd->logo;
     }
     public function getStatus()
     {
-        $top_url = "https://api.twitch.tv/kraken/streams/" . $this->name;
+        $top_url = "https://api.twitch.tv/kraken/streams/" . $this->name . "?client_id=9w0wfeb3nd0iuovyl0i32kpyyzktyh9";
         $data = HD::http_get_document($top_url);
         $jd = json_decode($data);
         $descript = $jd->stream->channel->status . "\nViewers: " . $jd->stream->viewers;
         return $descript;
     }
+    public function getGameName()
+    {
+        $top_url = "https://api.twitch.tv/kraken/streams/" . $this->name . "?client_id=9w0wfeb3nd0iuovyl0i32kpyyzktyh9";
+        $data = HD::http_get_document($top_url);
+        $jd = json_decode($data);
+        $descript = $jd->stream->game;
+        return $descript;
+    }
 
     private function loadQuality()
     {
-        $top_url = "http://api.twitch.tv/api/channels/" . $this->name . "/access_token";
+        $top_url = "http://api.twitch.tv/api/channels/" . $this->name . "/access_token?client_id=9w0wfeb3nd0iuovyl0i32kpyyzktyh9";
         $auth_data = HD::http_get_document($top_url);
         $tokens = json_decode($auth_data);
 
@@ -156,93 +164,11 @@ class Tw_Search_quality
         $m3u8_url = "http://usher.twitch.tv/api/channel/hls/" . $this->name . ".m3u8?" . $ts . "&allow_source=true";
         $hls_data = HD::http_get_document($m3u8_url);
         preg_match_all('|BANDWIDTH=(\d+),RESOLUTION=(.+),VIDEO=\"(\w+)\"|', $hls_data, $match_video);
+        if (!$match_video[0]) {
+            preg_match_all('|BANDWIDTH=(\d+)(,)VIDEO=\"(\w+)\"|', $hls_data, $match_video);
+        }
         preg_match_all('|http:(.*)|', $hls_data, $match_url);
         array_push($match_video, $match_url[0]);
         $this->database = $match_video;
-    }
-}
-
-class Tw_IRC
-{
-    public $database, $fp;
-
-    function __construct($name)
-    {
-        $this->streamName = $name;
-        $this->loadIRC();
-    }
-    function loadIRC()
-    {
-        $server = "irc.twitch.tv";
-        $port = 6667;
-        $nick = "aspellip_"; // Enter your nick here.
-        $password = "oauth:3ei4lj7pqxn6ayndyecio82z0v61pb"; // We might want to get this through twitch API asking the user for username and password.
-        $channels = array("#" . $this->streamName);
-        /* End of configuration */
-        $fp = fsockopen($server, $port, $errno, $errstr);
-        if (!$fp) {
-            hd_print("Error: $errno - $errstr\n");
-            exit;
-        }
-        fwrite($fp, "PASS " . $password . "\r\n");
-        fwrite($fp, "NICK " . $nick . "\r\n");
-        while (!preg_match("/:\S+ 376 \S+ :.*/i", $read)) {
-            $read = fgets($fp);
-        }
-        foreach ($channels as $num => $chan) {
-            fwrite($fp, "JOIN $chan\r\n");
-        }
-        hd_print("Connected!\n");
-        while (TRUE) {
-            $read = fgets($fp);
-            if (preg_match("/:(\S+)!\S+@\S+ JOIN (#\S+)/i", $read, $match)) {
-                $this->user_joined($match[1], $match[2]);
-            }
-            if (preg_match("/:(\S+)!\S+@\S+ PART (#\S+)/i", $read, $match)) {
-                $this->user_parted($match[1], $match[2]);
-            }
-            if (preg_match("/:(\S+)!\S+@\S+ PRIVMSG (#\S+) :(.*)/i", $read, $match)) {
-                $this->inc_message($match[1], $match[2], $match[3]);
-            }
-            if (preg_match("/:jtv!jtv@\S+ PRIVMSG $nick :(\S+)/i", $read, $match)) {
-                $this->jtv_error($match[1]);
-            }
-            if (preg_match("/PING :.*/i", $read, $match)) {
-                fwrite($fp, "PONG :$match[1]\r\n");
-            }
-            hd_print($read);
-        }
-    }
-    function user_joined($nick, $chan)
-    {
-        global $users;
-        $users[$chan][] = $nick;
-        hd_print("$nick joined {$chan}.\n");
-    }
-    function user_parted($nick, $chan)
-    {
-        global $users;
-        $num = array_search($nick, $users[$chan]);
-        if ($num !== FALSE) {
-            unset($users[$chan][$num]);
-        }
-        hd_print("$nick parted {$chan}.\n");
-    }
-    function inc_message($nick, $chan, $msg)
-    {
-        global $fp, $users;
-        $Tclass = new TwitchPlugin();
-        $Tclass->stream_chat = "$chan : <$nick> $msg\n";
-        hd_print("$chan : <$nick> $msg\n");
-        if (preg_match("/.*!usercount.*/mi", $msg)) {
-            echo "!usercount triggered.\n";
-            echo "$fp\n";
-            echo "$chan\n";
-            fwrite($fp, "PRIVMSG $chan :There are " . count($users[$chan]) . " users in this chatroom.\r\n");
-        }
-    }
-    function jtv_error($msg)
-    {
-        hd_print("Message from jtv: $msg\n");
     }
 }
