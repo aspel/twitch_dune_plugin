@@ -15,7 +15,7 @@ class TwDatabase
     private function loadGames()
     {
         $this->database = array();
-        $this->addGames("https://api.twitch.tv/kraken/games/top?limit=100");
+        $this->addGames("https://api.twitch.tv/kraken/games/top?limit=100&client_id=9w0wfeb3nd0iuovyl0i32kpyyzktyh9");
     }
 
     private function addGames($url)
@@ -79,7 +79,7 @@ class Tw_Search_All_stream
     {
         $this->database = array();
         $game_name = urlencode($this->name);
-        $this->addGames("https://api.twitch.tv/kraken/streams?limit=100");
+        $this->addGames("https://api.twitch.tv/kraken/streams?limit=100&client_id=9w0wfeb3nd0iuovyl0i32kpyyzktyh9");
     }
 
     private function addGames($url)
@@ -107,7 +107,7 @@ class Tw_Search_stream
     {
         $this->database = array();
         $game_name = urlencode($this->name);
-        $this->addGames("https://api.twitch.tv/kraken/streams?game=$game_name&limit=100");
+        $this->addGames("https://api.twitch.tv/kraken/streams?game=$game_name&limit=100&client_id=9w0wfeb3nd0iuovyl0i32kpyyzktyh9");
     }
 
     private function addGames($url)
