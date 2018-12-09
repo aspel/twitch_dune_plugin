@@ -31,8 +31,8 @@
   <params>
      <program>main.php</program>
   </params>
-  <version_index>8</version_index>
-  <version>0.5.8</version>
+  <version_index>9</version_index>
+  <version>0.5.9</version>
   <check_update>
     <schema>1</schema>
     <url>http://tw.fex.cc/twitch/update.txt</url>
